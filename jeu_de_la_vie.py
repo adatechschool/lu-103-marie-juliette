@@ -6,21 +6,19 @@ def next_state (state):
     for i in range(len(state)):
         line = ["."]*len(state[i])
         new_state.append(line)
-    neighbours = 0
     for y in range(len(state)):
         for x in range(len(state[y])):
+            neighbours = 0
             for i in range(y-1,y+1):
                 for j in range(x-1,x+1): 
-                    if state[i][j]=="O":
+                    if state[i][j]=="O" and not(i==y and j==x):
                         neighbours+=1
-                        if state[y][x]=="O":
-                            neighbours-= 1 
-    if state[y][x]=="." and neighbours==3:
-        new_state[y][x]="O"
-    elif state[y][x]=="O" and neighbours==2 or neighbours==3:
-        new_state[y][x]="O"
-    else: 
-        new_state[y][x]="."
+            if state[y][x]=="." and neighbours==3:
+                new_state[y][x]=str(neighbours)
+            elif state[y][x]=="O" and neighbours==2 or neighbours==3:
+                new_state[y][x]=str(neighbours)
+            else: 
+                new_state[y][x]=str(neighbours)
     return new_state
 
 # Fonction principale, que vous n'avez pas à modifier ;
@@ -43,8 +41,8 @@ def main (stdscr):
         # Préparation de l'affichage ligne par ligne
         for i in range(len(state)):
             for j in range(len(state[i])):
-                if state[i][j] == "O":
-                    stdscr.addstr(i, j, "O") # attention, curses met y avant x
+                #if state[i][j] == "O":
+                stdscr.addstr(i, j, state[i][j]) # attention, curses met y avant x
 
         # Fonction qui affiche ce qu'on a préparé
         stdscr.refresh()
